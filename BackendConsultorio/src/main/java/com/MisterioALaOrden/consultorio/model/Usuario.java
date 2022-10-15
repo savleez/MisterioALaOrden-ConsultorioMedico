@@ -23,10 +23,10 @@ public class Usuario implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name = "cedula", length = 20)
+	@Column(name = "cedula", length = 20, nullable = false)
 	private String cedula;
 	
-	@Column(name = "password", length = 45)
+	@Column(name = "password", length = 45, nullable = false)
 	private String password;
 	
 	@Column(name = "fechaHoraCreacion")
@@ -90,6 +90,16 @@ public class Usuario implements Serializable{
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+
+	public String getCedula() {
+		return cedula;
+	}
+
+
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
 	}
 	
 	
