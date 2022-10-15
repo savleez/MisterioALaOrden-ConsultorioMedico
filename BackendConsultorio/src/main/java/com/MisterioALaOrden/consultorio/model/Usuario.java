@@ -23,16 +23,19 @@ public class Usuario implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@Column(name = "cedula", length = 20)
+	private String cedula;
+	
 	@Column(name = "password", length = 45)
 	private String password;
 	
 	@Column(name = "fechaHoraCreacion")
 	private Date fechaHoraCreacion;
 	
-	@Column(name = "tipo", length = 45)
+	@Column(name = "tipo", columnDefinition = "nvarchar(45) default 'user'")
 	private String tipo;
 	
-	@Column(name = "estado", length = 45)
+	@Column(name = "estado", columnDefinition = "nvarchar(45) default 'activo'")
 	private String estado;
 
 	
