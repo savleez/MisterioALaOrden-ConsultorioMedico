@@ -120,6 +120,7 @@ export default ({
         if (usuarioCorrecto){
           sessionStorage.setItem('isAuthenticated', true);
           sessionStorage.setItem('loggedUserCedula', usuarioCorrecto.cedula)
+          sessionStorage.setItem('loggedUserId', usuarioCorrecto.id)
           this.$router.push('/dashboard')
         } else {
           alert("Credenciales no válidas")
