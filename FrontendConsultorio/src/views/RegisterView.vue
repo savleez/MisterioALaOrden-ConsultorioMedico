@@ -141,10 +141,6 @@ export default ({
             }
         };
 
-
-
-        
-
         fetch(userUrl, userOptions)
             .then( response => {
                 if (!response.status == 201){
@@ -181,7 +177,6 @@ export default ({
                         console.log(error);
                         return;
                     })
-
             })
             .catch( (error) => {
                 alert("Usuario no creado, por favor intente otra vez.")
