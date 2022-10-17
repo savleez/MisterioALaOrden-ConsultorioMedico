@@ -1,6 +1,7 @@
 package com.MisterioALaOrden.consultorio.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +34,7 @@ public class Paciente implements Serializable{
 	@Column(name="telefonoPaciente",length = 45)
 	private String telefonoPaciente;
 	@Column(name="edadPaciente")
-	private Integer edadPaciente;
+	private Date edadPaciente;
 	@OneToOne
     @JoinColumn(name = "usuario")
 	private Usuario usuario;
@@ -89,11 +90,11 @@ public class Paciente implements Serializable{
 		this.telefonoPaciente = telefonoPaciente;
 	}
 
-	public Integer getEdadPaciente() {
+	public Date getEdadPaciente() {
 		return edadPaciente;
 	}
 
-	public void setEdadPaciente(Integer edadPaciente) {
+	public void setEdadPaciente(Date edadPaciente) {
 		this.edadPaciente = edadPaciente;
 	}
 

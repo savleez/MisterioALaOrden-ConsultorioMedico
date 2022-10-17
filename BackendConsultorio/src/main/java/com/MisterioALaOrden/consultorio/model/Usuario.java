@@ -23,7 +23,7 @@ public class Usuario implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name = "cedula", length = 20, nullable = false)
+	@Column(name = "cedula", length = 20, nullable = false, unique = true)
 	private String cedula;
 	
 	@Column(name = "password", length = 45, nullable = false)

@@ -2,19 +2,19 @@
   <div class="container-fluid">
     <div class="row d-flex justify-content-center align-items-center">
       <div class="col-md-9 col-lg-6 col-xl-5 d-flex justify-content-center">
-        <img src="../assets/logo.png" class="img-fluid" alt="Logo consultorio" style="max-width: 400px;">
+        <img src="@/assets/logo.png" class="img-fluid" alt="Logo consultorio" style="max-width: 400px;">
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-        <form @submit.prevent="login">
+        <form v-on:submit.prevent="login">
           <!-- Consultorio medico -->
           <div class="divider d-flex align-items-center my-4">
             <p class="text-center fs-3 fw-bold mx-3 mb-0">Consultorio Médico</p>
           </div>
-          <!-- Cedula input -->
+          <!-- Email input -->
           <div class="form-outline mb-3">
             <input v-model="cedula" type="text" id="cedula" class="form-control form-control-lg"
               placeholder="Ingrese su cédula" />
-            <label class="form-label" for="cedula">Cédula</label>
+            <label class="form-label" for="email">Cédula</label>
           </div>
           <!-- Password input -->
           <div class="form-outline mb-2">
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+
 export default ({
   name: 'login',
   components: {
@@ -47,19 +48,20 @@ export default ({
   data() {
     return {
       authToken: "",
+      isAuthenticated: false,
       cedula: "",
       password: "",
       error: false,
       errorMsg: "",
     }
   },
-  computed: {
-    isAuthenticated(){
-      return sessionStorage.getItem("isAuthenticated");
-    }
-  },
   methods: {
+    getAuthLocalToken() {
+      this.authToken = localStorage.getItem("authToken")
+      return
+    },
     getAuthToken() {
+      this.getAuthLocalToken();
 
       if (this.isAuthenticated){
         this.$router.push('/dashboard')
@@ -77,14 +79,20 @@ export default ({
       fetch('http://localhost:8080/api/auth', options)
         .then( response => response.json())
         .then( (data) => {
-          this.authToken = data.access;
-          sessionStorage.setItem('authToken', this.authToken)
+          // this.token = data.access;
+          localStorage.authToken = data.access;
+          this.getAuthLocalToken();
         })
         .catch( (error) => {
           this.error = true;
           this.errorMsg = error;
           console.log(error)
           throw error;
+
+          // const error = new Error(response.statusText);
+          // error.json = response.json();
+          // this.mensajeError = error.message;
+          // throw error;
         })
     },
     login() {
@@ -100,7 +108,6 @@ export default ({
 
       this.cedula = "";
       this.password = "";
-
       let urlUsuarios = "http://localhost:8080/api/usuarios/";
 
       let options = {
@@ -114,11 +121,18 @@ export default ({
       fetch(urlUsuarios, options)
       .then( response => response.json())
       .then( (data) => {
+        // console.log(data);
+        // data.forEach(element => {
+        //   console.log(element)
+        // });
         let usuarioCorrecto = data.filter( (element) => {
           return element.cedula === userData.cedula && element.password === userData.password;
         })[0]
         if (usuarioCorrecto){
-          sessionStorage.setItem('isAuthenticated', true);
+          // console.log(usuarioCorrecto);
+          // this.isAuthenticated = true;
+          // this.$emit('isAuthenticated', true)
+          localStorage.isAuthenticated = true;
           this.$router.push('/dashboard')
         } else {
           alert("Credenciales no válidas")
@@ -132,6 +146,7 @@ export default ({
   },
   mounted () {
     this.getAuthToken()
+    // this.obtenerToken()
   }
 })
 </script>

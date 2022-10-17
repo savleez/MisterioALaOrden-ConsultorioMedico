@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard">
+  <div class="dashboard" >
     <h1>This is the dashboard</h1>
   </div>
 </template>
@@ -13,13 +13,25 @@ export default ({
   },
   data() {
     return {
-      token: "",
-      cedula: "",
-      password: "",
-      isAuthenticated : false,
+      authToken: "",
       error: false,
       errorMsg: "",
     }
+  },
+  computed: {
+    isAuthenticated() {
+      return sessionStorage.getItem('isAuthenticated');
+    }
+  },
+  methods: {
+    checkIsAuthenticated(){
+      if(!this.isAuthenticated){
+        this.$router.push('/')
+      }
+    }
+  },
+  mounted() {
+    this.checkIsAuthenticated();
   },
 })
 </script>
