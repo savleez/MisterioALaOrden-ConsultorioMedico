@@ -23,7 +23,7 @@ public class Paciente implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idPaciente;
-	@Column(name="cedulaPaciente",length = 20)
+	@Column(name="cedulaPaciente",length = 20, nullable = false, unique = true)
 	private String cedulaPaciente;
 	@Column(name="nombrePaciente",length = 45)
 	private String nombrePaciente;

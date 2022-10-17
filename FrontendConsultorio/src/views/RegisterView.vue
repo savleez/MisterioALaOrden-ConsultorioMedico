@@ -112,42 +112,83 @@ export default ({
             return
         }
 
-        let newUsuario = {
+        let newUser = {
             cedula : this.cedulaPaciente,
             password : this.password
         }
 
-        let options = {
+        let newPacient = {
+            cedulaPaciente : this.cedulaPaciente,
+            nombrePaciente : this.nombrePaciente,
+            apellidoPaciente : this.apellidoPaciente,
+            edadPaciente : this.edadPaciente,
+            correoPaciente : this.correoPaciente,
+            telefonoPaciente : this.telefonoPaciente,
+            usuario : {
+                id : null
+            }
+        }
+
+        let userUrl = "http://localhost:8080/api/usuarios/";
+        let pacientUrl = "http://localhost:8080/api/pacientes/";
+
+        let userOptions = {
             method: 'POST',
-            body: JSON.stringify(newUsuario),
+            body: JSON.stringify(newUser),
             headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + this.authToken
             }
         };
 
-        let urlUsuarios = "http://localhost:8080/api/usuarios/";
 
-        fetch(urlUsuarios, options)
+
+        
+
+        fetch(userUrl, userOptions)
             .then( response => {
-                if (response.status == 201){
-                    return response.json()
-                } else if (response.status == 500) {
+                if (!response.status == 201){
                     return Promise.reject("Usuario no creado")
-                } else {
-                    // console.log("Status: " + resp.status)
-                    return Promise.reject("server")
                 }
+                return response.json()
             })
-            .then( (data) => {
-                // console.log(data)
-                alert("Usuario creado correctamente. Por favor inicie sesión.")
-                this.$router.push('/')
+            .then( data => {
+                newPacient.usuario.id = data.id;
+                let pacientOptions = {
+                    method: 'POST',
+                    body: JSON.stringify(newPacient),
+                    headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + this.authToken
+                    }
+                };
+
+                fetch(pacientUrl, pacientOptions)
+                    .then( response => {
+                        if (!response.status == 201){
+                            return Promise.reject("Paciente no creado");
+                        }
+                        return response.json()
+                    })
+                    .then( data => {
+                        console.log("Usuario creado")
+                        // console.log(data)
+                        alert("Usuario creado con éxito. Por favor inicie sesión.")
+                        this.$router.push('/')
+                    })
+                    .catch( (error) => {
+                        alert("Usuario no creado, por favor intente otra vez.");
+                        console.log(error);
+                        return;
+                    })
+
             })
             .catch( (error) => {
                 alert("Usuario no creado, por favor intente otra vez.")
-                // console.log(error)
+                console.log(error)
+                return
             })
+
 
     }
   },
