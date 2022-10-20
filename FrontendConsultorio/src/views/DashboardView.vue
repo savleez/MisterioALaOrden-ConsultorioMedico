@@ -7,7 +7,7 @@
           <!-- Cedula input -->
           <div class="form-outline mb-3">
             <input v-model="cedulaPaciente" type="text" id="cedula" class="form-control form-control-lg"
-              placeholder="Ingrese su cédula" />
+              placeholder="Ingrese su cédula" readonly />
             <label class="form-label" for="cedula">Cédula</label>
           </div>
           <div class="form-outline mb-3">
@@ -45,6 +45,12 @@
           <div class="text-center text-lg-start mt-4 pt-2">
             <button type="submit" class="btn btn-primary btn-lg">Actualizar</button>
           </div>
+          <div class="text-center text-lg-start mt-4 pt-2">
+            <button type="button" class="btn btn-danger btn-lg" @click="deletePatient">Eliminar cuenta</button>
+          </div>
+          <div class="text-center text-lg-start mt-4 pt-2">
+            <button type="button" class="btn btn-secondary btn-lg" @click="closeSesion">Cerrar sesión</button>
+          </div>
         </form>
       </div>
     </div>
@@ -62,7 +68,7 @@ export default ({
   },
   data() {
     return {
-      idPaciente : "",
+      idPaciente: "",
       cedulaPaciente: "",
       nombrePaciente: "",
       apellidoPaciente: "",
@@ -136,15 +142,15 @@ export default ({
       }
 
       let newPacient = {
-        idPaciente : parseInt(this.idPaciente),
+        idPaciente: parseInt(this.idPaciente),
         cedulaPaciente: this.cedulaPaciente,
         nombrePaciente: this.nombrePaciente,
         apellidoPaciente: this.apellidoPaciente,
         correoPaciente: this.correoPaciente,
         telefonoPaciente: this.telefonoPaciente,
         edadPaciente: this.edadPaciente,
-        usuario : {
-          id : parseInt(this.loggedUserId)
+        usuario: {
+          id: parseInt(this.loggedUserId)
         }
       }
 
@@ -175,6 +181,59 @@ export default ({
           console.log(error)
           return
         })
+    },
+    deletePatient() {
+      let confirmacion = confirm('¿Está seguro de que desea eliminar su cuenta? Recuerde que no podrá recuperarla')
+      if (confirmacion) {
+
+        let pacientUrl = "http://localhost:8080/api/pacientes/" + this.idPaciente;
+
+        let patientOptions = {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.authToken
+          }
+        }
+
+        fetch(pacientUrl, patientOptions)
+          .then(response => {
+            if (!response.status == 200) {
+              return Promise.reject("Usuario no actualizado")
+            }
+            return
+          })
+          .then(() => {
+            console.log('Paciente eliminado')
+            let userUrl = "http://localhost:8080/api/usuarios/" + this.loggedUserId;
+
+            let userOptions = {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + this.authToken
+              }
+            }
+
+            fetch(userUrl, userOptions)
+              .then(response => {
+                if (response.status == 200) {
+                  alert('Su cuenta fue eliminada')
+                  sessionStorage.removeItem('isAuthenticated')
+                  sessionStorage.removeItem('loggedUserCedula')
+                  sessionStorage.removeItem('loggedUserId')
+                  this.$router.push('/')
+                } else { alert('El proceso no pudo completarse') }
+              })
+          })
+          .catch(error => console.log(error))
+      }
+    },
+    closeSesion() {
+      sessionStorage.removeItem('isAuthenticated')
+      sessionStorage.removeItem('loggedUserCedula')
+      sessionStorage.removeItem('loggedUserId')
+      this.$router.push('/')
     }
   },
   mounted() {
