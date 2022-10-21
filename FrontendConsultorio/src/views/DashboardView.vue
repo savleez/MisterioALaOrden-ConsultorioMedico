@@ -103,7 +103,7 @@ export default ({
     updateInfo() {
       this.checkIsAuthenticated();
 
-      let pacientUrl = "http://localhost:8080/api/pacientes/";
+      let pacientUrl = "http://132.145.192.40:8080/consultorio/api/pacientes/";
 
       let userOptions = {
         method: 'GET',
@@ -154,7 +154,7 @@ export default ({
         }
       }
 
-      let pacientUrl = "http://localhost:8080/api/pacientes/" + this.idPaciente;
+      let pacientUrl = "http://132.145.192.40:8080/consultorio/api/pacientes/" + this.idPaciente;
 
       let userOptions = {
         method: 'PUT',
@@ -186,7 +186,7 @@ export default ({
       let confirmacion = confirm('¿Está seguro de que desea eliminar su cuenta? Recuerde que no podrá recuperarla')
       if (confirmacion) {
 
-        let pacientUrl = "http://localhost:8080/api/pacientes/" + this.idPaciente;
+        let pacientUrl = "http://132.145.192.40:8080/consultorio/api/pacientes/" + this.idPaciente;
 
         let patientOptions = {
           method: 'DELETE',
@@ -205,7 +205,7 @@ export default ({
           })
           .then(() => {
             console.log('Paciente eliminado')
-            let userUrl = "http://localhost:8080/api/usuarios/" + this.loggedUserId;
+            let userUrl = "http://132.145.192.40:8080/consultorio/api/usuarios/" + this.loggedUserId;
 
             let userOptions = {
               method: 'DELETE',
@@ -229,7 +229,7 @@ export default ({
           .catch(error => console.log(error))
       }
     },
-    closeSesion() {
+    closeSession() {
       sessionStorage.removeItem('isAuthenticated')
       sessionStorage.removeItem('loggedUserCedula')
       sessionStorage.removeItem('loggedUserId')

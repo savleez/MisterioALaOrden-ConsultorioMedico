@@ -129,8 +129,8 @@ export default ({
             }
         }
 
-        let userUrl = "http://localhost:8080/api/usuarios/";
-        let pacientUrl = "http://localhost:8080/api/pacientes/";
+        let userUrl = "http://132.145.192.40:8080/consultorio/api/usuarios/";
+        let pacientUrl = "http://132.145.192.40:8080/consultorio/api/pacientes/";
 
         let userOptions = {
             method: 'POST',

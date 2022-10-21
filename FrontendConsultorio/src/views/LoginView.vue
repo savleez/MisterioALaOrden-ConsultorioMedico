@@ -74,7 +74,7 @@ export default ({
         }
       };
 
-      fetch('http://localhost:8080/api/auth', options)
+      fetch('http://132.145.192.40:8080/consultorio/api/auth', options)
         .then( response => response.json())
         .then( (data) => {
           this.authToken = data.access;
@@ -101,7 +101,7 @@ export default ({
       this.cedula = "";
       this.password = "";
 
-      let urlUsuarios = "http://localhost:8080/api/usuarios/";
+      let urlUsuarios = "http://132.145.192.40:8080/consultorio/api/usuarios/";
 
       let options = {
         method: 'GET',

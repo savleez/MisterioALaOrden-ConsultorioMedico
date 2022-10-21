@@ -70,7 +70,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>demo</finalName>
+		<finalName>consultorio</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
